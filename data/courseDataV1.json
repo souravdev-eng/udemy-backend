@@ -1,0 +1,32 @@
+[
+  {
+    "ratings": 4.5,
+    "totalRatings": 1622,
+    "title": "The Complete React and Redux Bootcamp 2021",
+    "description": "The complete 2020 react boot camp.",
+    "price": 580,
+    "author": "Stifan Grainder",
+    "category": "Web development",
+    "subCategory": "Front-End development"
+  },
+  {
+    "ratings": 4.7,
+    "totalRatings": 2679,
+    "title": "The complete Nodejs BootCamp 2021",
+    "description": "The complete Nodejs bootcamp 2021",
+    "price": 440,
+    "author": "Jonas",
+    "category": "Web development",
+    "subCategory": "Backend-End development"
+  },
+  {
+    "ratings": 4.9,
+    "totalRatings": 3579,
+    "title": "Python Development BootCamp",
+    "description": "The No.1 Pyton development BootCamp in 2021",
+    "price": 740,
+    "author": "Angela Gui",
+    "category": "Web development",
+    "subCategory": "Python"
+  }
+]

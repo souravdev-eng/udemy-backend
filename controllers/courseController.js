@@ -1,115 +1,74 @@
 const Course = require('../models/courseSchema');
+const AppError = require('../utils/appError');
+const catchAsync = require('../utils/catchAsync');
 
-exports.createCourse = async (req, res, next) => {
-  try {
-    const newCourse = await Course.create(req.body);
-    res.status(201).json({
-      status: 'Success',
-      course: {
-        data: newCourse,
-      },
-    });
-  } catch (error) {
-    res.status(400).json({
-      status: 'Fail',
-      error,
-      message: error.message,
-    });
+exports.createCourse = catchAsync(async (req, res, next) => {
+  const newCourse = await Course.create(req.body);
+  res.status(201).json({
+    status: 'Success',
+    course: {
+      data: newCourse,
+    },
+  });
+  next();
+});
+
+exports.getAllCourse = catchAsync(async (req, res, next) => {
+  const course = await Course.find({});
+
+  res.status(200).json({
+    status: 'Success',
+    numberOfCourse: course.length,
+    course: {
+      data: course,
+    },
+  });
+  next();
+});
+
+exports.getCourseById = catchAsync(async (req, res, next) => {
+  const course = await Course.findById(req.params.id);
+
+  if (!course) {
+    next(new AppError('There is no Course found with this ID', 404));
   }
-};
 
-exports.getAllCourse = async (req, res, next) => {
-  try {
-    const course = await Course.find({});
-    res.status(200).json({
-      status: 'Success',
-      numberOfCourse: course.length,
-      course: {
-        data: course,
-      },
-    });
-  } catch (error) {
-    res.status(400).json({
-      status: 'Fail',
-      error,
-      message: error.message,
-    });
+  res.status(200).json({
+    status: 'Success',
+    course: {
+      data: course,
+    },
+  });
+});
+
+exports.updateCourse = catchAsync(async (req, res, next) => {
+  const course = await Course.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  if (!course) {
+    next(new AppError('There is no Course found with this ID', 404));
   }
-};
 
-exports.getCourseById = async (req, res, next) => {
-  try {
-    const course = await Course.findById(req.params.id);
-    if (!course) {
-      res.status(404).json({
-        status: 'Fail',
-        message: 'Course not find',
-      });
-    }
-    res.status(200).json({
-      status: 'Success',
-      course: {
-        data: course,
-      },
-    });
-  } catch (error) {
-    res.status(400).json({
-      status: 'Fail',
-      error,
-      message: error.message,
-    });
+  res.status(200).json({
+    status: 'Success',
+    numberOfCourse: course.length,
+    course: {
+      data: course,
+    },
+  });
+});
+
+exports.deleteCourse = catchAsync(async (req, res, next) => {
+  const course = await Course.findByIdAndDelete(req.params.id);
+
+  if (!course) {
+    next(new AppError('There is no Course found with this ID', 404));
   }
-};
 
-exports.updateCourse = async (req, res, next) => {
-  try {
-    const course = await Course.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
-
-    if (!course) {
-      res.status(404).json({
-        status: 'Fail',
-        message: 'Course not find',
-      });
-    }
-
-    res.status(200).json({
-      status: 'Success',
-      numberOfCourse: course.length,
-      course: {
-        data: course,
-      },
-    });
-  } catch (error) {
-    res.status(400).json({
-      status: 'Fail',
-      error,
-      message: error.message,
-    });
-  }
-};
-
-exports.deleteCourse = async (req, res, next) => {
-  try {
-    const course = await Course.findByIdAndDelete(req.params.id);
-    if (!course) {
-      res.status(404).json({
-        status: 'Fail',
-        message: 'Course not find',
-      });
-    }
-
-    res.status(200).json({
-      status: 'Course deleted successfully',
-      data: null,
-    });
-  } catch (error) {
-    res.status(400).json({
-      status: 'Fail',
-      error,
-      message: error.message,
-    });
-  }
-};
+  res.status(200).json({
+    status: 'Course deleted successfully',
+    data: null,
+  });
+});

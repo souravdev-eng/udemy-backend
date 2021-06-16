@@ -34,7 +34,8 @@ const userSchema = new mongoose.Schema({
       message: 'Password must be same'
     },
     required: [true, 'Please provide your password conforim']
-  }
+  },
+  passwordCangedAt: Date
 });
 
 userSchema.pre('save', async function(next) {
@@ -51,6 +52,16 @@ userSchema.methods.correctPassword = async function(
 ) {
   return await bcrypt.compare(candidatePassword, userPassword);
 };
+
+userSchema.methods.passwordChageAfter = function(JWTTimestamp) {
+  if (this.passwordCangedAt) {
+    const currentTime = parseInt(this.passwordCangedAt.getTime() / 1000, 10);
+    console.log(JWTTimestamp, currentTime);
+    return JWTTimestamp < currentTime;
+  }
+  return false;
+};
+
 userSchema.plugin(uniqueValidator);
 const User = mongoose.model('User', userSchema);
 

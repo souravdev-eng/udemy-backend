@@ -7,6 +7,8 @@ const {
   getCourseById
 } = require('../controllers/courseController');
 
+// const { protect } = require('../controllers/authController');
+
 const router = express.Router();
 
 router

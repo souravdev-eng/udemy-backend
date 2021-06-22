@@ -5,8 +5,8 @@ const User = require('../models/userSchema');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
-const signInWithToken = id => {
-  return jwt.sign({ id }, process.env.JWT_SECRECT, {
+const signInWithToken = (id, email, name) => {
+  return jwt.sign({ id, email, name }, process.env.JWT_SECRECT, {
     expiresIn: process.env.JWT_EXPIRATION
   });
 };
@@ -20,6 +20,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     passwordConforim: req.body.passwordConforim,
     passwordCangedAt: req.body.passwordCangedAt
   });
+
   const token = signInWithToken(newUser._id);
   res.status(200).json({
     status: 'success',
@@ -44,10 +45,11 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError('Your email or password is incorrect', 401));
   }
 
-  const token = signInWithToken(user._id);
+  const token = signInWithToken(user._id, user.email, user.name);
   res.status(200).json({
     status: 'success',
-    token
+    token,
+    user: user
   });
 });
 

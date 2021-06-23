@@ -4,7 +4,7 @@ const cors = require('cors');
 
 const productRouter = require('./routes/productRoute');
 const userRouter = require('./routes/userRoute');
-
+const cloudineryRouter = require('./routes/cloudineryRoute');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 
@@ -22,6 +22,7 @@ app.use(cors());
 // routes
 app.use('/api/v1/course', productRouter);
 app.use('/api/v1/user', userRouter);
+app.use('/api/v1/upload', cloudineryRouter);
 
 //? Global unhandel middleare's
 

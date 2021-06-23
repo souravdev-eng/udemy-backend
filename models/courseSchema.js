@@ -24,11 +24,7 @@ const courseSchema = new mongoose.Schema({
   },
   longDescription: {
     type: String,
-    minLength: [10, 'A course description should not less than 50 characters']
-    // maxLength: [
-    //   5000,
-    //   'A course description should not more than 5000 characters'
-    // ]
+    minLength: [10, 'A course description should not less than 10 characters']
   },
   image: String,
   price: {
